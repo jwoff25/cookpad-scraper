@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 from urllib2 import Request, urlopen, URLError, HTTPError
+import urllib
 
-#for offline debugging (comment out lines 7 and 8)
-#soup = BeautifulSoup(open('test3.html'),"html.parser")
+# for offline debugging (comment out lines 7 and 8)
+# soup = BeautifulSoup(open('test3.html'),"html.parser")
 
 counter = 0
 for link in open('links.txt', 'r').readlines():
@@ -23,7 +24,7 @@ for link in open('links.txt', 'r').readlines():
 
     ## Recipe Title
     title = soup.find("h1", {"class": "recipe-title fn clearfix"}).text.strip()
-    '''
+
     ## Ingredients
     for divs in ingredients[0].find_all("div", {"class": "ingredient_name"}):
         ingredients_list.append(divs.text.strip())
@@ -51,9 +52,9 @@ for link in open('links.txt', 'r').readlines():
             i+=1
         w.write("\n")
     counter += 1
-    '''
+
 
     ## Get Images
-    photo_url = soup.find_all("div", {"id", "recipe-title"})
-    print photo_url
+    photo_url = soup.find_all("img", {"class", "analytics_tracking photo large_photo_clickable"})[0]['src']
+    urllib.urlretrieve(photo_url, title + '.jpg')
     #url = urlopen()
